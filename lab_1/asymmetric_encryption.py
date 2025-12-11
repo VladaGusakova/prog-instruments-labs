@@ -44,7 +44,7 @@ class RSAManager:
         try:
             return public_key.encrypt(data, self.padding_scheme)
         except Exception as e:
-            raise Exception(f"RSA encryption failed: {e}")
+            raise RuntimeError(f"RSA decryption failed: {e}") from e
 
     def decrypt(self, encrypted_data: bytes, private_key: RSAPrivateKey) -> bytes:
         '''
@@ -56,4 +56,4 @@ class RSAManager:
         try:
             return private_key.decrypt(encrypted_data, self.padding_scheme)
         except Exception as e:
-            raise Exception(f"RSA decryption failed: {e}")
+            raise RuntimeError(f"RSA decryption failed: {e}") from e
