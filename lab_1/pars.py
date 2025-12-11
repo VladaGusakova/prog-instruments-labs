@@ -2,6 +2,13 @@ import argparse
 
 
 def create_parser() -> argparse.ArgumentParser:
+    '''
+    Creates an argument parser for the hybrid crypto system.
+    Defines command line arguments for key generation, encryption,
+    and decryption operations.
+    :return: Configured argument parser object
+    :rtype: argparse.ArgumentParser
+    '''
     parser = argparse.ArgumentParser(
         description='Hybrid RSA + CAST5 Cryptosystem'
     )

@@ -5,6 +5,10 @@ from hybrid_crypto import HybridCrypto
 from file_manager import FileManager
 
 def main():
+    '''
+    Using all functions
+    :return: None
+    '''
     try:
         file_manager = FileManager()
         config = file_manager.load_json_config('settings.json')

@@ -6,14 +6,23 @@ import os
 
 
 def create_parse():
+    '''
+    Creates argument parser for command line interface.
+    :return: Parsed command line arguments
+    '''
     parser = argparse.ArgumentParser()
-    parser.add_argument("annotation_path", type = str, help = "Path to annotation")
-    parser.add_argument("width", type = int, help = "Max width")
-    parser.add_argument("height", type = int, help = "Max height")
+    parser.add_argument("annotation_path", type=str, help="Path to annotation")
+    parser.add_argument("width", type=int, help="Max width")
+    parser.add_argument("height", type=int, help="Max height")
     args = parser.parse_args()
     return args
 
 def create_df(annotation_path: str) -> pd.DataFrame:
+    '''
+    Creates DataFrame from annotation CSV file.
+    :param annotation_path: Path to annotation CSV file
+    :return: DataFrame with annotation data
+    '''
     if os.path.isfile(annotation_path):
         df = pd.read_csv(annotation_path)
         return df
@@ -21,6 +30,11 @@ def create_df(annotation_path: str) -> pd.DataFrame:
         raise Exception(f"File {annotation_path} not found.")
 
 def add_image_shape(df):
+    '''
+    Adds image dimensions to DataFrame.
+    :param df: Input DataFrame with image paths
+    :return: DataFrame with added height, width and channels columns
+    '''
     height, width, channels = [], [], []
     for path in df["relative path"]:
         if os.path.isfile(path):
@@ -36,14 +50,31 @@ def add_image_shape(df):
     return df
 
 def statistic(df):
+    '''
+    Calculates descriptive statistics for image dimensions.
+    :param df: DataFrame with image dimensions
+    :return: Statistical summary DataFrame
+    '''
     stats = df[["height", "width", "channels"]].describe()
     return stats
 
 def filter_by_width_and_height(df: pd.DataFrame, max_w: int, max_h: int) -> pd.DataFrame:
+    '''
+    Filters images by maximum width and height.
+    :param df: DataFrame with image dimensions
+    :param max_w: Maximum allowed width
+    :param max_h: Maximum allowed height
+    :return: Filtered DataFrame
+    '''
     filtered_df = df[(df['width'] <= max_w) & (df['height'] <= max_h)]
     return filtered_df
 
 def add_area(df):
+    '''
+    Calculates and adds image area column.
+    :param df: DataFrame with image dimensions
+    :return: DataFrame with added area column
+    '''
     if 'width' in df.columns:
         df['area'] = df['width'] * df['height']
         return df
@@ -51,6 +82,11 @@ def add_area(df):
         raise Exception(f"Column 'width' and 'height' does not exist in DataFrame")
 
 def filter_by_area(df):
+    '''
+    Sorts DataFrame by image area in ascending order.
+    :param df: DataFrame with image area
+    :return: Sorted DataFrame by area
+    '''
     if 'area' in df.columns:
         df_sorted = df.sort_values(by='area')
         return df_sorted
@@ -58,6 +94,10 @@ def filter_by_area(df):
         raise Exception(f"Column 'area' does not exist in DataFrame")
 
 def create_histogram(df):
+    '''
+    Creates histogram of image areas distribution.
+    :param df: DataFrame with image areas
+    '''
     plt.hist(df['area'], bins=df.shape[0], color='black')
     plt.title('image area distribution')
     plt.xlabel('area(px)')
@@ -65,6 +105,9 @@ def create_histogram(df):
     plt.show()
 
 def main():
+    '''
+    Main function to execute image analysis pipeline.
+    '''
     try:
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
