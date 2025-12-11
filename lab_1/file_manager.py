@@ -1,8 +1,11 @@
 import os
 import json
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.serialization import load_pem_public_key
-from cryptography.hazmat.primitives.serialization import load_pem_private_key
+from cryptography.hazmat.primitives.serialization import (
+    load_pem_public_key,
+    load_pem_private_key,
+)
+
 
 class FileManager:
     def read_key_length_from_file(self, filepath):
@@ -34,7 +37,11 @@ class FileManager:
 
     def save_private_key_pem(self, private_key, filepath):
         try:
-            pem = private_key.private_bytes(encoding=serialization.Encoding.PEM, format=serialization.PrivateFormat.TraditionalOpenSSL, encryption_algorithm=serialization.NoEncryption())
+            pem = private_key.private_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PrivateFormat.TraditionalOpenSSL,
+                encryption_algorithm=serialization.NoEncryption(),
+            )
             self.write_file(pem, filepath)
             print(f"Private key saved: {filepath}")
         except Exception as e:
@@ -42,7 +49,10 @@ class FileManager:
 
     def save_public_key_pem(self, public_key, filepath):
         try:
-            pem = public_key.public_bytes(encoding=serialization.Encoding.PEM, format=serialization.PublicFormat.SubjectPublicKeyInfo)
+            pem = public_key.public_bytes(
+                encoding=serialization.Encoding.PEM,
+                format=serialization.PublicFormat.SubjectPublicKeyInfo,
+            )
             self.write_file(pem, filepath)
             print(f"Public key saved: {filepath}")
         except Exception as e:

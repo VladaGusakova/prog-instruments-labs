@@ -4,25 +4,24 @@ import matplotlib.pyplot as plt
 import argparse
 import os
 
-def create_parse ():
+
+def create_parse():
     parser = argparse.ArgumentParser()
-    parser.add_argument("annotation_path", type=str, help="Path to annotation")
-    parser.add_argument("width", type=int, help="Max width")
-    parser.add_argument("height", type=int, help="Max height")
+    parser.add_argument("annotation_path", type = str, help = "Path to annotation")
+    parser.add_argument("width", type = int, help = "Max width")
+    parser.add_argument("height", type = int, help = "Max height")
     args = parser.parse_args()
     return args
 
-
-def create_df(annotation_path : str) -> pd.DataFrame:
+def create_df(annotation_path: str) -> pd.DataFrame:
     if os.path.isfile(annotation_path):
         df = pd.read_csv(annotation_path)
         return df
     else:
         raise Exception(f"File {annotation_path} not found.")
 
-
 def add_image_shape(df):
-    height, width, channels = [],[],[]
+    height, width, channels = [], [], []
     for path in df["relative path"]:
         if os.path.isfile(path):
             img = cv2.imread(path)
@@ -36,16 +35,13 @@ def add_image_shape(df):
     df["channels"] = channels
     return df
 
-
-def statistic (df):
-    stats= df[["height","width","channels"]].describe()
+def statistic(df):
+    stats = df[["height", "width", "channels"]].describe()
     return stats
 
-
-def filter_by_width_and_height (df: pd.DataFrame, max_w : int, max_h : int) -> pd.DataFrame:
+def filter_by_width_and_height(df: pd.DataFrame, max_w: int, max_h: int) -> pd.DataFrame:
     filtered_df = df[(df['width'] <= max_w) & (df['height'] <= max_h)]
     return filtered_df
-
 
 def add_area(df):
     if 'width' in df.columns:
@@ -54,24 +50,21 @@ def add_area(df):
     else:
         raise Exception(f"Column 'width' and 'height' does not exist in DataFrame")
 
-
 def filter_by_area(df):
     if 'area' in df.columns:
-        df_sorted = df.sort_values(by = 'area')
+        df_sorted = df.sort_values(by='area')
         return df_sorted
     else:
         raise Exception(f"Column 'area' does not exist in DataFrame")
 
-
-def create_histogram (df):
-    plt.hist(df['area'], bins = df.shape[0], color='black')
+def create_histogram(df):
+    plt.hist(df['area'], bins=df.shape[0], color='black')
     plt.title('image area distribution')
     plt.xlabel('area(px)')
     plt.ylabel('frequency')
     plt.show()
 
-
-def main ():
+def main():
     try:
         pd.set_option('display.max_rows', None)
         pd.set_option('display.max_columns', None)
@@ -89,4 +82,3 @@ def main ():
 
 if __name__ == '__main__':
     main()
-
