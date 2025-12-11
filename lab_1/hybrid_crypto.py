@@ -2,6 +2,9 @@ from asymmetric_encryption import RSAManager
 from symmetric_encryption import CAST5Manager
 from file_manager import FileManager
 
+DEFAULT_RSA_KEY_SIZE = 2048
+DEFAULT_CAST_KEY_LENGTH = 128
+
 
 class HybridCrypto:
     def __init__(self, config, file_manager):
@@ -12,8 +15,8 @@ class HybridCrypto:
         '''
         self.config = config
         self.file_manager = file_manager
-        self.rsa_manager = RSAManager(config.get('rsa_key_size', 2048))
-        self.cast_manager = CAST5Manager(config.get('cast_key_length', 128))
+        self.rsa_manager = RSAManager(config.get('rsa_key_size', DEFAULT_RSA_KEY_SIZE))
+        self.cast_manager = CAST5Manager(config.get('cast_key_length', DEFAULT_CAST_KEY_LENGTH))
 
     def generate_keys(self):
         '''

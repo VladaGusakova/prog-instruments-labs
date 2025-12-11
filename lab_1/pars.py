@@ -1,5 +1,7 @@
 import argparse
 
+DEFAULT_CAST_KEY_LENGTH = 128
+
 
 def create_parser() -> argparse.ArgumentParser:
     '''
@@ -35,7 +37,7 @@ def create_parser() -> argparse.ArgumentParser:
         '-len',
         '--cast-key-length',
         type=int,
-        default=128,
+        default=DEFAULT_CAST_KEY_LENGTH,
         help='Key Length CAST5'
     )
     return parser

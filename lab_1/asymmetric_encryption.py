@@ -1,6 +1,8 @@
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
 
+PUBLIC_EXPONENT = 65537
+
 
 class RSAManager:
     '''
@@ -25,7 +27,7 @@ class RSAManager:
         :return: Tuple containing private key and public key
         '''
         private_key = rsa.generate_private_key(
-            public_exponent=65537,
+            public_exponent=PUBLIC_EXPONENT,
             key_size=self.key_size
         )
         return private_key, private_key.public_key()

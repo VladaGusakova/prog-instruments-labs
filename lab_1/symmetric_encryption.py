@@ -2,6 +2,11 @@ from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 from cryptography.hazmat.primitives import padding
 import os
 
+BITS_PER_BYTE = 8
+CAST5_BLOCK_SIZE = 8
+CAST5_BLOCK_SIZE_BITS = 64
+IV_SIZE = 8
+
 
 class CAST5Manager:
     '''
@@ -14,8 +19,8 @@ class CAST5Manager:
         Initializes CAST5Manager with specified key length.
         :param key_length: Key length in bits
         '''
-        self.key_length = key_length // 8
-        self.block_size = 8
+        self.key_length = key_length // BITS_PER_BYTE
+        self.block_size = CAST5_BLOCK_SIZE
 
     def generate_key(self):
         '''
@@ -31,10 +36,10 @@ class CAST5Manager:
         :param key: Encryption key bytes
         :return: Encrypted data bytes (IV + ciphertext)
         '''
-        iv = os.urandom(8)
+        iv = os.urandom(IV_SIZE)
         cipher = Cipher(algorithms.CAST5(key), modes.CBC(iv))
         encryptor = cipher.encryptor()
-        padder = padding.PKCS7(64).padder()
+        padder = padding.PKCS7(CAST5_BLOCK_SIZE_BITS).padder()
         padded_data = padder.update(data) + padder.finalize()
         encrypted = encryptor.update(padded_data) + encryptor.finalize()
         return iv + encrypted
@@ -46,11 +51,11 @@ class CAST5Manager:
         :param key: Decryption key bytes
         :return: Decrypted plaintext data bytes
         '''
-        iv = encrypted_data[:8]
-        ciphertext = encrypted_data[8:]
+        iv = encrypted_data[:IV_SIZE]
+        ciphertext = encrypted_data[IV_SIZE:]
         cipher = Cipher(algorithms.CAST5(key), modes.CBC(iv))
         decryptor = cipher.decryptor()
         padded_data = decryptor.update(ciphertext) + decryptor.finalize()
-        unpadder = padding.PKCS7(64).unpadder()
+        unpadder = padding.PKCS7(CAST5_BLOCK_SIZE_BITS).unpadder()
         data = unpadder.update(padded_data) + unpadder.finalize()
         return data

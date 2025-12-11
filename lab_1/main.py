@@ -4,6 +4,11 @@ from pars import create_parser
 from hybrid_crypto import HybridCrypto
 from file_manager import FileManager
 
+MIN_KEY_LENGTH = 40
+MAX_KEY_LENGTH = 128
+KEY_LENGTH_MULTIPLE = 8
+
+
 def main():
     '''
     Using all functions
@@ -15,14 +20,14 @@ def main():
         parser = create_parser()
         args = parser.parse_args()
 
-        if  os.path.isfile(config.get('key_length')):
+        if os.path.isfile(config.get('key_length')):
             key_length = file_manager.read_key_length_from_file(config.get('key_length'))
-            if (key_length < 40 or key_length > 128) or key_length % 8 != 0:
+            if (key_length < MIN_KEY_LENGTH or key_length > MAX_KEY_LENGTH) or key_length % KEY_LENGTH_MULTIPLE != 0:
                 raise ValueError("Incorrect key length.")
             config['cast_key_length'] = key_length
         else:
             key_length = args.cast_key_length
-            if (key_length < 40 or key_length > 128) or key_length % 8 != 0:
+            if (key_length < MIN_KEY_LENGTH or key_length > MAX_KEY_LENGTH) or key_length % KEY_LENGTH_MULTIPLE != 0:
                 raise ValueError("Incorrect key length.")
             config['cast_key_length'] = key_length
 
