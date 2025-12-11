@@ -3,9 +3,10 @@ import cv2
 import matplotlib.pyplot as plt
 import argparse
 import os
+from typing import Tuple
+import numpy as np
 
-
-def create_parse():
+def create_parse() -> argparse.Namespace:
     '''
     Creates argument parser for command line interface.
     :return: Parsed command line arguments
@@ -29,16 +30,18 @@ def create_df(annotation_path: str) -> pd.DataFrame:
     else:
         raise Exception(f"File {annotation_path} not found.")
 
-def add_image_shape(df):
+def add_image_shape(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Adds image dimensions to DataFrame.
     :param df: Input DataFrame with image paths
     :return: DataFrame with added height, width and channels columns
     '''
-    height, width, channels = [], [], []
+    height = []
+    width = []
+    channels = []
     for path in df["relative path"]:
         if os.path.isfile(path):
-            img = cv2.imread(path)
+            img: np.ndarray = cv2.imread(path)
             height.append(img.shape[0])
             width.append(img.shape[1])
             channels.append(img.shape[2])
@@ -49,7 +52,7 @@ def add_image_shape(df):
     df["channels"] = channels
     return df
 
-def statistic(df):
+def statistic(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Calculates descriptive statistics for image dimensions.
     :param df: DataFrame with image dimensions
@@ -69,7 +72,7 @@ def filter_by_width_and_height(df: pd.DataFrame, max_w: int, max_h: int) -> pd.D
     filtered_df = df[(df['width'] <= max_w) & (df['height'] <= max_h)]
     return filtered_df
 
-def add_area(df):
+def add_area(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Calculates and adds image area column.
     :param df: DataFrame with image dimensions
@@ -81,7 +84,7 @@ def add_area(df):
     else:
         raise Exception(f"Column 'width' and 'height' does not exist in DataFrame")
 
-def filter_by_area(df):
+def filter_by_area(df: pd.DataFrame) -> pd.DataFrame:
     '''
     Sorts DataFrame by image area in ascending order.
     :param df: DataFrame with image area
@@ -93,7 +96,7 @@ def filter_by_area(df):
     else:
         raise Exception(f"Column 'area' does not exist in DataFrame")
 
-def create_histogram(df):
+def create_histogram(df: pd.DataFrame) -> None:
     '''
     Creates histogram of image areas distribution.
     :param df: DataFrame with image areas
@@ -104,7 +107,7 @@ def create_histogram(df):
     plt.ylabel('frequency')
     plt.show()
 
-def main():
+def main() -> None:
     '''
     Main function to execute image analysis pipeline.
     '''

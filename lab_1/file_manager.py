@@ -5,6 +5,8 @@ from cryptography.hazmat.primitives.serialization import (
     load_pem_public_key,
     load_pem_private_key,
 )
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
+from typing import Dict, Any
 
 
 class FileManager:
@@ -12,7 +14,7 @@ class FileManager:
     A utility class for handling file operations related to keys and configuration.
     """
 
-    def read_key_length_from_file(self, filepath):
+    def read_key_length_from_file(self, filepath: str) -> int:
         """
         Reads the key length (as integer) from a text file.
         :param filepath: Path to the text file containing the key length.
@@ -27,7 +29,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error reading key length from file '{filepath}': {e}")
 
-    def read_file(self, filepath):
+    def read_file(self, filepath: str) -> bytes:
         """
         Reads binary data from a file.
         :param filepath: Path to the file to read.
@@ -42,7 +44,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error reading file {filepath}: {e}")
 
-    def write_file(self, data, filepath):
+    def write_file(self, data: bytes, filepath: str) -> None:
         """
         Writes binary data to a file, creating directories if needed.
         :param data: Data bytes to write.
@@ -57,7 +59,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error writing file {filepath}: {e}")
 
-    def save_private_key_pem(self, private_key, filepath):
+    def save_private_key_pem(self, private_key: RSAPrivateKey, filepath: str) -> None:
         """
         Saves an RSA private key to a file in PEM format without encryption.
         :param private_key: RSA private key object.
@@ -75,7 +77,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error saving private key: {e}")
 
-    def save_public_key_pem(self, public_key, filepath):
+    def save_public_key_pem(self, public_key: RSAPublicKey, filepath: str) -> None:
         """
         Saves an RSA public key to a file in PEM format.
         :param public_key: RSA public key object.
@@ -92,7 +94,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error saving public key: {e}")
 
-    def load_private_key_pem(self, filepath):
+    def load_private_key_pem(self, filepath: str) -> RSAPrivateKey:
         """
         Loads an RSA private key from a PEM file.
         :param filepath: Path to the PEM file containing the private key.
@@ -106,7 +108,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error loading private key: {e}")
 
-    def load_public_key_pem(self, filepath):
+    def load_public_key_pem(self, filepath: str) -> RSAPublicKey:
         """
         Loads an RSA public key from a PEM file.
         :param filepath: Path to the PEM file containing the public key.
@@ -120,7 +122,7 @@ class FileManager:
         except Exception as e:
             raise IOError(f"Error loading public key: {e}")
 
-    def load_json_config(self, filepath):
+    def load_json_config(self, filepath: str) -> Dict[str, Any]:
         """
         Loads a JSON configuration file.
         :param filepath: Path to the JSON configuration file.

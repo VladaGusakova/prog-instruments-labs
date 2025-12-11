@@ -3,13 +3,14 @@ import os
 from pars import create_parser
 from hybrid_crypto import HybridCrypto
 from file_manager import FileManager
+from typing import Dict, Any
 
 MIN_KEY_LENGTH = 40
 MAX_KEY_LENGTH = 128
 KEY_LENGTH_MULTIPLE = 8
 
 
-def main():
+def main() -> None:
     '''
     Using all functions
     :return: None

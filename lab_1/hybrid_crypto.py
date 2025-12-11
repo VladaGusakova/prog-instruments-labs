@@ -1,13 +1,15 @@
 from asymmetric_encryption import RSAManager
 from symmetric_encryption import CAST5Manager
 from file_manager import FileManager
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
+from typing import Dict, Any
 
 DEFAULT_RSA_KEY_SIZE = 2048
 DEFAULT_CAST_KEY_LENGTH = 128
 
 
 class HybridCrypto:
-    def __init__(self, config, file_manager):
+    def __init__(self, config: Dict[str, Any], file_manager: FileManager) -> None:
         '''
         Initializes HybridCrypto with configuration and file manager.
         :param config: Configuration dictionary
@@ -18,7 +20,7 @@ class HybridCrypto:
         self.rsa_manager = RSAManager(config.get('rsa_key_size', DEFAULT_RSA_KEY_SIZE))
         self.cast_manager = CAST5Manager(config.get('cast_key_length', DEFAULT_CAST_KEY_LENGTH))
 
-    def generate_keys(self):
+    def generate_keys(self) -> None:
         '''
         Generates RSA key pair and CAST5 symmetric key.
         Saves keys to files defined in configuration.
@@ -34,7 +36,7 @@ class HybridCrypto:
 
         print("Key generation completed.")
 
-    def encrypt_file(self):
+    def encrypt_file(self) -> None:
         '''
         Encrypts target file using CAST5 symmetric encryption.
         Uses RSA to decrypt the symmetric key first.
@@ -49,7 +51,7 @@ class HybridCrypto:
 
         print("Encryption complete.")
 
-    def decrypt_file(self):
+    def decrypt_file(self) -> None:
         '''
         Decrypts file using CAST5 symmetric encryption.
         Uses RSA to decrypt the symmetric key first.
