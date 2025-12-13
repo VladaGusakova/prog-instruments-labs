@@ -1,8 +1,8 @@
+from typing import Dict, Any
+from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
 from asymmetric_encryption import RSAManager
 from symmetric_encryption import CAST5Manager
 from file_manager import FileManager
-from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
-from typing import Dict, Any
 
 DEFAULT_RSA_KEY_SIZE = 2048
 DEFAULT_CAST_KEY_LENGTH = 128

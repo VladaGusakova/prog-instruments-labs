@@ -1,10 +1,11 @@
-import pandas as pd
-import cv2
-import matplotlib.pyplot as plt
 import argparse
 import os
 from typing import Tuple
+import cv2
+import matplotlib.pyplot as plt
 import numpy as np
+import pandas as pd
+
 
 def create_parse() -> argparse.Namespace:
     '''

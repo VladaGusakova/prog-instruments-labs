@@ -1,7 +1,7 @@
+from typing import Tuple
 from cryptography.hazmat.primitives.asymmetric import rsa, padding
 from cryptography.hazmat.primitives import hashes
 from cryptography.hazmat.primitives.asymmetric.rsa import RSAPrivateKey, RSAPublicKey
-from typing import Tuple
 
 PUBLIC_EXPONENT = 65537
 

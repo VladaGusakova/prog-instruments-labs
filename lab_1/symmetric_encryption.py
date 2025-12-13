@@ -1,7 +1,7 @@
-from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
-from cryptography.hazmat.primitives import padding
 import os
 from typing import Tuple
+from cryptography.hazmat.primitives import padding
+from cryptography.hazmat.primitives.ciphers import Cipher, algorithms, modes
 
 BITS_PER_BYTE = 8
 CAST5_BLOCK_SIZE = 8

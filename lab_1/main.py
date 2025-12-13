@@ -1,9 +1,9 @@
-import sys
 import os
-from pars import create_parser
-from hybrid_crypto import HybridCrypto
+import sys
+from typing import Any, Dict
 from file_manager import FileManager
-from typing import Dict, Any
+from hybrid_crypto import HybridCrypto
+from pars import create_parser
 
 MIN_KEY_LENGTH = 40
 MAX_KEY_LENGTH = 128
