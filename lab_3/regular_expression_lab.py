@@ -1,56 +1,40 @@
 import csv
 import re
+from typing import List
 from checksum import calculate_checksum, serialize_result
 
 CSV_PATH = "77.csv"
 
 REGEX = {
-    "email": re.compile(
-        r'\\w+@[a-z]+\\.[a-z]+(\\.[a-z]+)?'
-    ),
-    "http_status_message": re.compile(
-        r'^\\d{3} [A-Za-z ]+$'
-    ),
-    "inn": re.compile(
-        r'^\d{10}$|^\d{12}$'
-    ),
-    "passport": re.compile(
-        r'\\d{2} \\d{2} \\d{6}'
-    ),
-    "ip_v4": re.compile(
-        r'^((25[0-5]|2[0-4]\d|1?\d?\d)\.){3}'
-        r'(25[0-5]|2[0-4]\d|1?\d?\d)$'
-    ),
-    "latitude": re.compile(
-        r'^-?\d{1,2}\.\d+$'
-    ),
-    "hex_color": re.compile(
-        r'#[a-fA-F0-9]{6}'
-    ),
-    "isbn": re.compile(
-        r'^(\d{1,5}-){2,4}\d{1,7}-\d$'
-    ),
-    "uuid": re.compile(
-        r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-    ),
-    "time": re.compile(
-        r'^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d\.\d{6}$'
-    ),
+    "email": r'^\w+@\w+\.\w+$',
+    "http_status_message": r'^\d{3} [A-Za-z ]+$',
+    "inn": r'^\d{10}$|^\d{12}$',
+    "passport": r'^\d{2} \d{2} \d{6}$',
+    "ip_v4": r'^((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])\.){3}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[1-9]?[0-9])$',
+    "latitude": r'^-?(?:90(?:\.0+)?|[0-8]?\d(?:\.\d+)?)$',
+    "hex_color": r'^#[A-Fa-f0-9]{6}$',
+    "isbn": r'^\d+-\d+-\d+-\d+(?:-\d+)?$',
+    "uuid": r'^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$',
+    "time": r'^(?:[01]\d|2[0-3]):[0-5]\d:[0-5]\d\.\d{6}$',
 }
 
-def find_invalid_rows(path: str) -> list[int]:
+
+def find_invalid_rows(file_path: str, encoding: str = "utf-16", delimiter: str = ";") -> List[int]:
     invalid_rows = []
 
-    with open(path, encoding="utf-16") as file:
-        reader = csv.DictReader(file, delimiter=";")
+    with open(file_path, "r", encoding=encoding) as f:
+        reader = csv.DictReader(f, delimiter=delimiter)
 
         for row_index, row in enumerate(reader):
             for column, pattern in REGEX.items():
-                if not pattern.fullmatch(row[column]):
+                value = row.get(column, "") or ""
+                value = value.strip().strip('"')
+                if not re.fullmatch(pattern, value):
                     invalid_rows.append(row_index)
                     break
 
-    return invalid_rows
+    return sorted(set(invalid_rows))
+
 
 def main() -> None:
     invalid_rows = find_invalid_rows(CSV_PATH)
