@@ -1,7 +1,6 @@
 import unittest
 
 from tennis2 import TennisGame2
-from tennis3 import TennisGame3
 
 test_cases = [
     (0, 0, "Love-All", "player1", "player2"),
@@ -54,7 +53,6 @@ class TestTennis(unittest.TestCase):
     def test_score_games_1_thru_6(self):
         for TennisGameClass in (
             TennisGame2,
-            TennisGame3,
         ):
             for testcase in test_cases:
                 (p1_points, p2_points, score, p1_name, p2_name) = testcase

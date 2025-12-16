@@ -1,7 +1,6 @@
 import pytest
 
 from tennis2 import TennisGame2
-from tennis3 import TennisGame3
 from tennis_unittest import play_game, test_cases
 
 
@@ -9,7 +8,6 @@ from tennis_unittest import play_game, test_cases
     "TennisGameClass",
     [
         TennisGame2,
-        TennisGame3,
     ],
 )
 @pytest.mark.parametrize(
