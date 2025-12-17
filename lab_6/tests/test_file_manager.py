@@ -3,7 +3,7 @@ import json
 import tempfile
 import pytest
 
-from file_manager import FileManager
+from lab_6.file_manager import FileManager
 
 
 @pytest.fixture
@@ -54,7 +54,6 @@ def test_load_json_config_success(fm, temp_dir):
     result = fm.load_json_config(path)
     assert result == config_data
 
-
 @pytest.mark.parametrize(
     "content,expected",
     [
@@ -92,7 +91,7 @@ def test_save_private_key_calls_write_file(monkeypatch, fm):
 
 def test_load_private_key_uses_read_file(monkeypatch, fm):
     monkeypatch.setattr(fm, "read_file", lambda path: b"PEM_DATA")
-    monkeypatch.setattr("file_manager.load_pem_private_key", lambda data, password=None: "PRIVATE_KEY")
+    monkeypatch.setattr("lab_6.file_manager.load_pem_private_key", lambda data, password=None: "PRIVATE_KEY")
 
     result = fm.load_private_key_pem("key.pem")
 
